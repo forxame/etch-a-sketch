@@ -1,30 +1,52 @@
 const container = document.getElementById("container");
-const grid = document.querySelectorAll(".grid-item")
 let slider = document.getElementById("slider");
 let sliderValue = document.querySelectorAll("#slider-value");
+const clearBtn = document.getElementById("clear-btn");
+let color = document.getElementById("color")
 
-function makeRows(rows, cols) {
-  container.style.setProperty('--grid-rows', rows);
-  container.style.setProperty('--grid-cols', cols);
-  for (c = 0; c < (rows * cols); c++) {
+function resetSize(size) {
+container.style.setProperty('--grid-rows', size);
+  container.style.setProperty('--grid-cols', size);
+  createGrid(size);
+}
+
+function createGrid(size) {
+    container.style.setProperty('--grid-rows', size);
+    container.style.setProperty('--grid-cols', size);
+    for (let i = 0; i < size * size; i++) {
     let cell = document.createElement("div");
     container.appendChild(cell).className = "grid-item";
-  };
-};
-
-makeRows(slider.value, slider.value);
-
-container.addEventListener("pointerdown", ()=>{
-    container.addEventListener("pointerover", (e)=>{
-        if (e.target.matches(".grid-item")) {
-            e.target.style.backgroundColor = "green";
-        }
-    })
     
-})
+    
+        function startDrawing(e) {
+            cell.addEventListener("mouseover", ()=>{
+                cell.style.backgroundColor = color.value;
+            })
+        }
+
+        function stopDrawing(e) {
+            cell.removeEventListener("mouseover")
+        }
+
+    container.addEventListener("mousedown", startDrawing);
+    // container.addEventListener("mouseup", stopDrawing);
+
+    function clearGrid() {
+      clearBtn.addEventListener("click", ()=>{
+        cell.style.backgroundColor = "white";
+      })
+    }
+    
+    clearGrid();
+    
+  }
+}
+
+createGrid(slider.value);
+
 
 sliderValue.forEach(item => item.innerHTML = slider.value);
 slider.oninput = ()=>{
-    sliderValue.forEach(item => item.innerHTML = slider.value);
-    makeRows(slider.value, slider.value);
+  sliderValue.forEach(item => item.innerHTML = slider.value);
+    resetSize(slider.value);
 }
