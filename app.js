@@ -7,6 +7,7 @@ const rainbowBtn = document.getElementById("rainbow-btn");
 const colorBtn = document.getElementById("color-btn");
 const color = document.getElementById("color");
 const activeMode = document.querySelector(".active");
+color.value = "#4ad996";
 
 let currentMode = "color";
 colorBtn.classList.add("active");
